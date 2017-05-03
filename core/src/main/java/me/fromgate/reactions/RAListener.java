@@ -40,6 +40,7 @@ import me.fromgate.reactions.event.FactionCreateEvent;
 import me.fromgate.reactions.event.FactionDisbandEvent;
 import me.fromgate.reactions.event.FactionEvent;
 import me.fromgate.reactions.event.FactionRelationEvent;
+import me.fromgate.reactions.event.FlightEvent;
 import me.fromgate.reactions.event.ItemClickEvent;
 import me.fromgate.reactions.event.ItemConsumeEvent;
 import me.fromgate.reactions.event.ItemHoldEvent;
@@ -105,6 +106,7 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.event.player.PlayerToggleFlightEvent;
 import org.bukkit.event.server.ServerCommandEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -377,6 +379,11 @@ public class RAListener implements Listener {
         if (EventManager.raiseDropEvent(event)) event.setCancelled(true);
     }
 
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    public void onFlight(PlayerToggleFlightEvent event) {
+        if (EventManager.raiseFlightEvent(event)) event.setCancelled(true);
+    }
+
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = false)
     public void onPlayerJoinActivators(PlayerJoinEvent event) {
@@ -544,6 +551,11 @@ public class RAListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onDropActivator(DropEvent event) {
+        event.setCancelled(Activators.activate(event));
+    }
+
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    public void onFlightActivator(FlightEvent event) {
         event.setCancelled(Activators.activate(event));
     }
 
